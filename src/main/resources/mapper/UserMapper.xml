@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jianml.mybatis.mapper.UserMapper">
+    <sql id="findUserDetailSql">
+        SELECT
+        u.user_id userId,
+        u.username,
+        u.create_time createTime,
+        u.ssex sex,
+        u.last_login_time lastLoginTime,
+        u.modify_time modifyTime
+        FROM
+        t_user u
+        WHERE 1 = 1
+        <if test="user.username != null and user.username != ''">
+            AND u.username = #{user.username}
+        </if>
+        <if test="user.sex != null and user.sex != ''">
+            AND u.ssex = #{user.sex}
+        </if>
+    </sql>
+    <select id="findUserDetailPage" parameterType="user" resultType="user">
+        <include refid="findUserDetailSql"/>
+    </select>
+
+    <select id="findUserDetail" parameterType="user" resultType="user">
+        <include refid="findUserDetailSql"/>
+    </select>
+
+    <select id="findByName" parameterType="string" resultType="user">
+        SELECT
+        u.user_id userId,
+        u.username,
+        u.password,
+        u.create_time createTime,
+        u.ssex sex,
+        u.modify_time modifyTime
+        FROM
+        t_user u
+        WHERE  u.username = #{username}
+    </select>
+</mapper>

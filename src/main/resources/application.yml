@@ -1,1 +1,29 @@
+server:
+  port: 8080
 
+# 数据库的配置信息
+spring:
+  datasource:
+    hikari:
+      connection-timeout: 30000
+      max-lifetime: 1800000
+      maximum-pool-size: 15
+      minimum-idle: 5
+      connection-test-query: select 1
+      pool-name: HikariCP
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://jianml.cn:3306/mybatis?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+    username: root
+    password: 123456
+
+mybatis-plus:
+  #实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: cn.jianml.mybatis.entity
+  # xml地址
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    #配置JdbcTypeForNull, oracle数据库必须配置
+    jdbc-type-for-null: null
+  global-config:
+    # 关闭 mybatis-plus的 banner
+    banner: false
