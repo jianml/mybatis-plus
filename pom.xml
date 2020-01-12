@@ -45,6 +45,12 @@
             <artifactId>mybatis-plus-generator</artifactId>
             <version>3.3.0</version>
         </dependency>
+        <!-- SQL 分析打印 -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>3.8.7</version>
+        </dependency>
         <!-- freemaker模板引擎，用于定义代码生成模板 -->
         <dependency>
             <groupId>org.freemarker</groupId>

@@ -11,8 +11,10 @@ spring:
       minimum-idle: 5
       connection-test-query: select 1
       pool-name: HikariCP
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://jianml.cn:3306/mybatis?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://jianml.cn:3306/mybatis?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://jianml.cn:3306/mybatis?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
     username: root
     password: 123456
 

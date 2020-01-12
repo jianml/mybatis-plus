@@ -213,6 +213,8 @@ MyBatis-Plus 支持 Velocity（默认）、Freemarker、Beetl等模板引擎，�
 
 
 
+
+
 运行 CodeGenerator 会发现，我么需要的 entity、mapper、service、controller 都有了，而且mybatis-plus 为我们封装了很对常用的方法 ，大大的提到了我们的开发效率
 
 ## 创建实体类
@@ -443,10 +445,76 @@ public class UserController {
 }
 ```
 
+##  SQL 分析打印
 
+### p6spy 依赖引入
 
+```xml
+<!-- SQL 分析打印 -->
+<dependency>
+    <groupId>p6spy</groupId>
+    <artifactId>p6spy</artifactId>
+    <version>3.8.7</version>
+</dependency>
+```
 
+### application.yml 配置
 
+应用`P6Spy`只需要
 
+- 替换你的`JDBC Driver`为`com.p6spy.engine.spy.P6SpyDriver`
+- 修改`JDBC Url`为`jdbc:p6spy:xxxx`
+- 配置`spy.properties`
+
+```yaml
+# 数据库的配置信息
+spring:
+  datasource:
+    hikari:
+      connection-timeout: 30000
+      max-lifetime: 1800000
+      maximum-pool-size: 15
+      minimum-idle: 5
+      connection-test-query: select 1
+      pool-name: HikariCP
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://jianml.cn:3306/mybatis?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://jianml.cn:3306/mybatis?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+    username: root
+    password: 123456
+```
+
+### 配置`spy.properties`
+
+```properties
+# p6spy配置，文档 https://p6spy.readthedocs.io/en/latest/configandusage.html
+# 使用日志系统记录 sql
+appender=com.p6spy.engine.spy.appender.Slf4JLogger
+# 自定义日志打印
+logMessageFormat=cn.jianml.mybatis.config.P6spySqlFormatConfig
+# 是否开启慢 SQL记录
+outagedetection=true
+# 慢 SQL记录标准 2 秒
+outagedetectioninterval=2
+# 实际驱动
+driverlist=com.mysql.cj.jdbc.Driver
+```
+
+### 自定义日志打印
+
+实现`MessageFormattingStrategy`接口
+
+```java
+public class P6spySqlFormatConfig implements MessageFormattingStrategy {
+
+    @Override
+    public String formatMessage(int connectionId, String now, long elapsed, String category, String prepared, String sql, String url) {
+        return !"".equals(sql.trim()) ? "[ " + LocalDateTime.now() + " ] --- | took "
+                + elapsed + "ms | " + category + " | connection " + connectionId + "\n "
+                + sql + ";" : "";
+    }
+}
+```
 
 > 源码地址：https://gitee.com/jianml/mybatis

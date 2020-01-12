@@ -10,7 +10,9 @@ import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 代码生成器，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
@@ -66,6 +68,10 @@ public class CodeGenerator {
             @Override
             public void initMap() {
                 // to do nothing
+                Map<String, Object> map = new HashMap<>();
+                map.put("basePackage", "cn.jianml.mybatis");
+                map.put("entityPackage", "User");
+                this.setMap(map);
             }
         };
 
@@ -87,17 +93,17 @@ public class CodeGenerator {
         });
 
         // 控制层
-        templatePath = "/generator/templates/controller.ftl";
-        // 自定义配置会被优先输出
-        focList.add(new FileOutConfig(templatePath) {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                // 自定义输出文件名 + pc.getModuleName()
-                String expand = projectPath + "/src/main/java/cn/jianml/mybatis" + "controller";
-                String entityFile = String.format((expand + File.separator + "%s" + ".java"), tableInfo.getControllerName());
-                return entityFile;
-            }
-        });
+//        templatePath = "/generator/templates/controller.ftl";
+//        // 自定义配置会被优先输出
+//        focList.add(new FileOutConfig(templatePath) {
+//            @Override
+//            public String outputFile(TableInfo tableInfo) {
+//                // 自定义输出文件名 + pc.getModuleName()
+//                String expand = projectPath + "/src/main/java/cn/jianml/mybatis1" + "controller";
+//                String entityFile = String.format((expand + File.separator + "%s" + ".java"), tableInfo.getControllerName());
+//                return entityFile;
+//            }
+//        });
         // 业务层
 
         // 数据层
@@ -123,7 +129,7 @@ public class CodeGenerator {
 
         // 配置自定义输出模板
         //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
-        // templateConfig.setEntity("templates/entity2.java");
+         templateConfig.setEntity("generator/templates/entity");
         // templateConfig.setService();
         // templateConfig.setController();
 

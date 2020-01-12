@@ -1,4 +1,4 @@
-package ${basePackage}.${entityPackage};
+package ${cfg.basePackage}.${cfg.entityPackage};
 
 <#if hasDate = true>
 import java.util.Date;
