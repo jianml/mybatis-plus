@@ -29,12 +29,12 @@
 
     <select id="findByName" parameterType="string" resultType="user">
         SELECT
-        u.user_id userId,
+        u.user_id,
         u.username,
         u.password,
-        u.create_time createTime,
+        u.create_time,
         u.ssex sex,
-        u.modify_time modifyTime
+        u.modify_time
         FROM
         t_user u
         WHERE  u.username = #{username}

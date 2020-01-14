@@ -3,7 +3,7 @@ package cn.jianml.mybatis.controller;
 import cn.jianml.mybatis.entity.QueryRequest;
 import cn.jianml.mybatis.entity.User;
 import cn.jianml.mybatis.service.IUserService;
-import org.apache.commons.lang3.StringUtils;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * @time 2020/1/9
  */
 @RestController
+@RequestMapping("user")
 public class UserController {
 
     @Autowired
@@ -22,41 +23,37 @@ public class UserController {
         return this.userService.findByName(username);
     }
 
-    @GetMapping("check/{username}")
-    public boolean checkUserName(@PathVariable String username, String userId) {
-        return this.userService.findByName(username) == null || StringUtils.isNotBlank(userId);
+    @GetMapping("list")
+    public IPage<User> userList(User user, QueryRequest request) {
+        return this.userService.findUserDetailList(user, request);
     }
-
-//    @GetMapping("list")
-//    public FebsResponse userList(User user, QueryRequest request) {
-//        Map<String, Object> dataTable = getDataTable(this.userService.findUserDetailList(user, request));
-//        return new FebsResponse().success().data(dataTable);
-//    }
 
     @PostMapping
     public void addUser(User user) {
         this.userService.createUser(user);
     }
 
-    @GetMapping("delete/{userIds}")
+    @DeleteMapping("/{userIds}")
     public void deleteUsers(@PathVariable String userIds) {
         String[] ids = userIds.split(",");
+        this.userService.deleteUsers(ids);
     }
 
-    @PostMapping("update")
+    @PutMapping
     public void updateUser(User user) {
         this.userService.updateUser(user);
     }
 
-    @PostMapping("password/reset/{usernames}")
-    public void resetPassword(@PathVariable String usernames) {
+    @PutMapping("password/reset")
+    public void resetPassword(String usernames) {
         String[] usernameArr = usernames.split(",");
         this.userService.resetPassword(usernameArr);
     }
 
     @PutMapping("password")
     public void updatePassword(String password) {
-        userService.updatePassword(password);
+        String username = "admin"; // 项目中这里应该是获取当前用户
+        userService.updatePassword(username, password);
     }
 
 }

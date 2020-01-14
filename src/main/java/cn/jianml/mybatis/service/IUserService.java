@@ -29,21 +29,6 @@ public interface IUserService extends IService<User> {
     IPage<User> findUserDetailList(User user, QueryRequest request);
 
     /**
-     * 通过用户名查找用户详细信息
-     *
-     * @param username 用户名
-     * @return 用户信息
-     */
-    User findUserDetailList(String username);
-
-    /**
-     * 更新用户登录时间
-     *
-     * @param username 用户名
-     */
-    void updateLoginTime(String username);
-
-    /**
      * 新增用户
      *
      * @param user user
@@ -72,17 +57,10 @@ public interface IUserService extends IService<User> {
     void resetPassword(String[] usernames);
 
     /**
-     * 注册用户
-     *
-     * @param username 用户名
-     * @param password 密码
-     */
-    void regist(String username, String password);
-
-    /**
      * 修改密码
      *
+     * @param username 用户名
      * @param password 新密码
      */
-    void updatePassword(String password);
+    void updatePassword(String username, String password);
 }
